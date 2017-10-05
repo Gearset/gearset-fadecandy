@@ -3,6 +3,7 @@
 var OPC = require('./opc')
 var client = new OPC(process.env.FADECANDY_SERVER || 'localhost', 7890);
 var model = OPC.loadModel(__dirname + '/model.json');
+const _ = require('underscore');
 
 let black = [0, 0, 0];
 let red = [128, 0, 0];
