@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "concurrently -k \"fcserver.exe fcserver.json\" \"node index.js\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Gearset",
   "license": "ISC",
   "dependencies": {
+    "concurrently": "^3.5.0",
     "underscore": "^1.8.3"
   }
 }
