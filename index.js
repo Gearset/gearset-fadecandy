@@ -26,6 +26,10 @@ let orgStates = [
     states.passing
 ];
 
+function setOrgState(orgIndex, state) {
+    orgStates[orgIndex] = state;
+}
+
 function getOrgColour(orgIndex){
     let orgState = orgStates[orgIndex];
     let orgColour = stateColours[orgState];
@@ -39,3 +43,9 @@ function draw() {
 }
 
 setInterval(draw, 20);
+
+setInterval(() => {
+    orgStates = _.map(orgStates, () => {
+        return Math.random() > 0.3 ? states.passing : states.failing;
+    });
+}, 5000);
