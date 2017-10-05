@@ -22,7 +22,7 @@ let orgStates = [
     states.failing,
     states.failing,
     states.passing
-]
+];
 
 function getOrgColour(orgIndex){
     let orgState = orgStates[orgIndex];
