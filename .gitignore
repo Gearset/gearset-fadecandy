@@ -59,3 +59,5 @@ typings/
 
 # Fadecandy
 fcserver.exe
+fcserver-osx
+fcserver-rpi
