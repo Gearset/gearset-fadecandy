@@ -38,11 +38,10 @@ var getter = new stateGetter(feedUrl, parser());
 console.log("Getting feed statuses for", projectUrls);
 getter.getParsedFeed().then(
     (projectsJson) => { 
-        console.log("Got feed statuses", projectsJson);
+        console.log("Got feed statuses");
 
         orgStates = _.map(projectUrls, projectUrl => {
             let projectStatus = _.find(projectsJson, x => x.webUrl === projectUrl);
-            console.log(projectUrl, projectStatus);
 
             if(!projectStatus) {
                 console.log("No project status returned for project with URL", projectUrl);
@@ -51,6 +50,7 @@ getter.getParsedFeed().then(
 
             return projectStatus.status;
         });
-        console.log(orgStates);
+        
+        console.log("Set org states to", orgStates);
     }
 );
