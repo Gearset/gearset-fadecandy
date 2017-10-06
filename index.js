@@ -38,7 +38,7 @@ function setOrgState(orgIndex, state) {
 function getOrgColour(orgIndex){
     let orgState = orgStates[orgIndex];
     let orgColour = stateColours[orgState];
-    return orgColour;
+    return orgColour || black;
 }
 
 function draw() {
