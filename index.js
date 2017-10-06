@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-const parser = require("./cruiseControlParser");
-const stateGetter = require("./orgStateGetter");
-const states = require('./states');
 const OPC = require('./opc');
 const _ = require('underscore');
 const fs = require("fs");
+const parser = require("./cruiseControlParser");
+const stateGetter = require("./orgStateGetter");
+const stateToColourMapping = require('./stateToColourMapping');
 
 const client = new OPC(process.env.FADECANDY_SERVER || 'localhost', 7890);
 const model = OPC.loadModel(__dirname + '/model.json');
@@ -12,31 +12,20 @@ const model = OPC.loadModel(__dirname + '/model.json');
 const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 const feedUrl = config.feedUrl;
 
-const black = [0, 0, 0];
-const white = [128, 128, 128];
-const red = [128, 0, 0];
-const green = [0, 128, 0];
-
-const stateColours = {};
-stateColours[states.passing] = green;
-stateColours[states.failing] = red;
-stateColours[states.unknown] = white;
-
 let orgStates = [];
 
 function setOrgState(orgIndex, state) {
     orgStates[orgIndex] = state;
 }
 
-function getOrgColour(orgIndex){
-    let orgState = orgStates[orgIndex];
-    let orgColour = stateColours[orgState];
-    return orgColour || stateColours[states.unknown];
+function getOrgState(orgIndex) {
+    return orgStates[orgIndex];
 }
 
 function draw() {
     client.mapPixels(modelPoint => {
-        return getOrgColour(modelPoint.orgIndex);
+        let orgState = getOrgState(modelPoint.orgIndex)
+        return stateToColourMapping.getOrgColour(orgState);
     }, model);
 }
 
