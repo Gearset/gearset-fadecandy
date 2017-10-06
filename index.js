@@ -27,12 +27,7 @@ stateColours[states.passing] = green;
 stateColours[states.failing] = red;
 stateColours[states.unknown] = white;
 
-let orgStates = [
-    states.passing,
-    states.failing,
-    states.failing,
-    states.passing
-];
+let orgStates = [];
 
 function setOrgState(orgIndex, state) {
     orgStates[orgIndex] = state;
