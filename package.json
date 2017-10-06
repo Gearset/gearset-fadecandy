@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start-windows": "concurrently -k \"fcserver.exe fcserver.json\" \"node index.js\"",
-    "start-rpi": "concurrently -k \"fcserver-rpi fcserver.json\" \"node index.js\"",
-    "start-osx": "concurrently -k \"fcserver-osx fcserver.json\" \"node index.js\"",
+    "start-rpi": "concurrently -k \"./fcserver-rpi fcserver.json\" \"node index.js\"",
+    "start-osx": "concurrently -k \"./fcserver-osx fcserver.json\" \"node index.js\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Gearset",
