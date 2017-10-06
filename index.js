@@ -41,7 +41,7 @@ function setOrgState(orgIndex, state) {
 function getOrgColour(orgIndex){
     let orgState = orgStates[orgIndex];
     let orgColour = stateColours[orgState];
-    return orgColour || black;
+    return orgColour || stateColours[states.unknown];
 }
 
 function convertState(projectStatus) {
