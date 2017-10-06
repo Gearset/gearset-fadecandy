@@ -15,10 +15,14 @@ const model = OPC.loadModel(__dirname + '/model.json');
 const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 const feedUrl = config.feedUrl;
 const projectUrls = config.projectUrls;
-const pollingPeriodMillis = config.pollingPeriodMillis || defaultPollingPeriod;
+let pollingPeriodMillis = config.pollingPeriodMillis || defaultPollingPeriod;
 
 if(!projectUrls){
     console.error("No project URLS defined in config.json");
+}
+if(pollingPeriodMillis < 5000) {
+    console.error("Polling period of less than 5 seconds is not permitted, setting to default of " + defaultPollingPeriod);
+    pollingPeriodMillis = defaultPollingPeriod;
 }
 
 let orgStates = [];
