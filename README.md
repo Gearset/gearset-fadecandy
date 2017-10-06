@@ -13,7 +13,7 @@ Software for powering an org test status lightboard using a fadecandy board and 
 - Run `npm run start-rpi` for raspberry pi
 - Run `npm run start-osx` for OSX
 
-## Raspberry Pi additional setup
+### Raspberry Pi
 
 You may need to add a new udev rule to allow non-admin access to the USB fadecandy device. In the `/etc/udev/rules.d/10-local.rules` file (create it if it doesn't exist), add:
 
