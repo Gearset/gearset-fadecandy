@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const parser = require("./cruiseControlParser");
 const stateGetter = require("./orgStateGetter");
+const states = require('./states');
 const OPC = require('./opc');
 const _ = require('underscore');
 const fs = require("fs");
@@ -15,12 +16,6 @@ const black = [0, 0, 0];
 const white = [128, 128, 128];
 const red = [128, 0, 0];
 const green = [0, 128, 0];
-
-const states = {
-    passing: 'passing',
-    failing: 'failing',
-    unknown: 'unknown'
-}
 
 const stateColours = {};
 stateColours[states.passing] = green;
@@ -39,17 +34,6 @@ function getOrgColour(orgIndex){
     return orgColour || stateColours[states.unknown];
 }
 
-function convertState(projectStatus) {
-    switch(projectStatus) {
-        case 'Success':
-            return states.passing;
-        case 'Failure':
-            return states.failing;
-        default:
-            return states.unknown;
-    }
-}
-
 function draw() {
     client.mapPixels(modelPoint => {
         return getOrgColour(modelPoint.orgIndex);
@@ -64,6 +48,6 @@ console.log("Getting feed statuses");
 getter.getParsedFeed().then(
     (projectsJson) => { 
         console.log("Got feed statuses", projectsJson);
-        orgStates = _.first(projectsJson, 4).map( (project) => convertState(project.status) );
+        orgStates = _.first(projectsJson, 4).map( (project) => project.status );
     }
 );
