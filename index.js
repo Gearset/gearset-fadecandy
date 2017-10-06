@@ -60,8 +60,10 @@ setInterval(draw, 20);
 
 var getter = new stateGetter(feedUrl, parser());
 
+console.log("Getting feed statuses");
 getter.getParsedFeed().then(
     (projectsJson) => { 
+        console.log("Got feed statuses", projectsJson);
         orgStates = _.first(projectsJson, 4).map( (project) => convertState(project.status) );
     }
 );
