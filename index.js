@@ -5,12 +5,14 @@ const fs = require("fs");
 const parser = require("./cruiseControlParser");
 const stateGetter = require("./orgStateGetter");
 const stateToColourMapping = require('./stateToColourMapping');
+const states = require('./states');
 
 const client = new OPC(process.env.FADECANDY_SERVER || 'localhost', 7890);
 const model = OPC.loadModel(__dirname + '/model.json');
 
 const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 const feedUrl = config.feedUrl;
+const projectUrls = config.projectUrls;
 
 let orgStates = [];
 
@@ -37,6 +39,16 @@ console.log("Getting feed statuses");
 getter.getParsedFeed().then(
     (projectsJson) => { 
         console.log("Got feed statuses", projectsJson);
-        orgStates = _.first(projectsJson, 4).map( (project) => project.status );
+
+        orgStates = _.map(projectUrls, projectUrl => {
+            let projectStatus = _.find(projectsJson, x => x.webUrl === projectUrl);
+
+            if(!projectStatus) {
+                console.log("No project status returned for project with URL", projectUrl);
+                return states.unknown;
+            }
+
+            return projectStatus.status;
+        });
     }
 );

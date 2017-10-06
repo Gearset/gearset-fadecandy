@@ -32,7 +32,8 @@ function CruiseControlParser () {
             var statuses = parsed.Projects.Project.map( (project) => {
                 return {
                     name: project.$.name,
-                    status: convertState(project.$.lastBuildStatus)
+                    status: convertState(project.$.lastBuildStatus),
+                    webUrl: project.$.webUrl
                 }
             } );
 
