@@ -14,6 +14,10 @@ const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 const feedUrl = config.feedUrl;
 const projectUrls = config.projectUrls;
 
+if(!projectUrls){
+    console.error("No project URLS defined in config.json");
+}
+
 let orgStates = [];
 
 function setOrgState(orgIndex, state) {
