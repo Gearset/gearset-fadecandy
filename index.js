@@ -1,29 +1,34 @@
 #!/usr/bin/env node
-
+const parser = require("./cruiseControlParser");
+const stateGetter = require("./orgStateGetter");
 const OPC = require('./opc');
 const _ = require('underscore');
+const fs = require("fs");
 
 const client = new OPC(process.env.FADECANDY_SERVER || 'localhost', 7890);
 const model = OPC.loadModel(__dirname + '/model.json');
+
+const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
+const feedUrl = config.feedUrl;
 
 const black = [0, 0, 0];
 const red = [128, 0, 0];
 const green = [0, 128, 0];
 
 const states = {
-    passing: 'passing',
-    failing: 'failing'
+    Passing: 'Passing',
+    Failing: 'Failing'
 }
 
 const stateColours = {};
-stateColours[states.passing] = green;
-stateColours[states.failing] = red;
+stateColours[states.Passing] = green;
+stateColours[states.Failing] = red;
 
 let orgStates = [
-    states.passing,
-    states.failing,
-    states.failing,
-    states.passing
+    states.Passing,
+    states.Failing,
+    states.Failing,
+    states.Passing
 ];
 
 function setOrgState(orgIndex, state) {
@@ -44,8 +49,10 @@ function draw() {
 
 setInterval(draw, 20);
 
-setInterval(() => {
-    orgStates = _.map(orgStates, () => {
-        return Math.random() > 0.3 ? states.passing : states.failing;
-    });
-}, 5000);
+var getter = new stateGetter(feedUrl, parser());
+
+getter.getParsedFeed().then(
+    (projectsJson) => { 
+        orgStates = _.first(projectsJson, 4).map( (project) => project.status );
+    }
+);

@@ -13,6 +13,8 @@ function OrgStateGetter (cruiseControlFeedUrl, cruiseControlParser) {
     self.getParsedFeed = function () {
         return fetchFeed().then(feed => self.cruiseControlParser.parse(feed));
     };
+
+    return self;
 }
 
 module.exports = OrgStateGetter;

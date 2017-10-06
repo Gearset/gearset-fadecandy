@@ -16,10 +16,18 @@ function CruiseControlParser () {
 
     self.parse = function (feedBody) {
         return parseXml(feedBody).then((parsed) => {
-            console.log(parsed);
-            return parsed;
+            var statuses = parsed.Projects.Project.map( (project) => {
+                return {
+                    name: project.$.name,
+                    status: project.$.lastBuildStatus
+                }
+            } );
+
+            return statuses;
         })
     };
+
+    return self;
 }
 
 module.exports = CruiseControlParser;

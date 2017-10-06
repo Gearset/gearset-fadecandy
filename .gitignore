@@ -61,3 +61,6 @@ typings/
 fcserver.exe
 fcserver-osx
 fcserver-rpi
+
+# configuration
+config.json
