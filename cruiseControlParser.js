@@ -31,17 +31,18 @@ function CruiseControlParser () {
     self.parse = function (feedBody) {
         return parseXml(feedBody).then((parsed) => {
             var statuses = parsed.Projects.Project.map( (project) => {
-                let status = {
+                let projectStatus = {
                     name: project.$.name,
-                    status: convertState(project.$.lastBuildStatus),
                     webUrl: project.$.webUrl
                 }
 
                 if (project.$.lastRunCodeCoverage && project.$.lastRunCodecoverageThreshold) {
-                    status[codeCovered] = project.$.lastRunCodeCoverage >= project.$.lastRunCodecoverageThreshold;
+                    projectStatus.codeCovered = project.$.lastRunCodeCoverage >= project.$.lastRunCodecoverageThreshold;
                 }
 
-                return status;
+                projectStatus.status = convertState(project.$.lastBuildStatus, projectStatus.codeCovered);
+
+                return projectStatus;
             } );
 
             return statuses;
