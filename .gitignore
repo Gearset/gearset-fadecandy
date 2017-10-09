@@ -64,3 +64,4 @@ fcserver-rpi
 
 # configuration
 config.json
+.vscode/launch.json
