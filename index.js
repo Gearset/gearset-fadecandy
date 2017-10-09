@@ -32,9 +32,19 @@ function getOrgState(orgIndex) {
 }
 
 function draw() {
+    const millis = new Date().getTime();
+
     client.mapPixels(modelPoint => {
-        let orgState = getOrgState(modelPoint.orgIndex)
-        return stateToColourMapping.getOrgColour(orgState);
+        let orgState = getOrgState(modelPoint.orgIndex);
+
+        if (orgState === "gearsetLogo" || orgState === "passing") {
+            return stateToColourMapping.getOrgColour(orgState);
+        }
+
+        let [red, green, blue] = stateToColourMapping.getOrgColour(orgState);
+        red = red * 0.5 * (Math.sin(millis * 0.00628 * 0.5) + 1);
+
+        return [red, green, blue];
     }, model);
 }
 
