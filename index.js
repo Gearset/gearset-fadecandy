@@ -52,7 +52,7 @@ function draw() {
         green = (green === 0) ? 0 : minColour + (green - minColour) * modulation;
         blue = (blue === 0) ? 0 : minColour + (blue - minColour) * modulation;
 
-        return [red * modulation, green * modulation, blue * modulation];
+        return [red, green, blue];
     }, model);
 }
 
