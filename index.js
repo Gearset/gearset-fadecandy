@@ -40,11 +40,11 @@ function draw() {
             return logoOrange;
         }
 
-        let orgState = getOrgState(modelPoint.orgIndex)
-        if (orgState = "passing") {
+        let orgState = getOrgState(modelPoint.orgIndex);
+        if (orgState === "passing") {
             return stateToColourMapping.getOrgColour(orgState);
         }
-        
+
         let [red, green, blue] = stateToColourMapping.getOrgColour(orgState);
         const modulation = 0.5 * (Math.sin(millis * 0.00628 * 0.5) + 1);
 
