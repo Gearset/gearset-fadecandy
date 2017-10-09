@@ -47,6 +47,10 @@ function draw() {
 
         let [red, green, blue] = stateToColourMapping.getOrgColour(orgState);
         const modulation = 0.5 * (Math.sin(millis * 0.00628 * 0.5) + 1);
+        const minColour = 25;
+        red = (red === 0) ? 0 : minColour + (red - minColour) * modulation;
+        green = (green === 0) ? 0 : minColour + (green - minColour) * modulation;
+        blue = (blue === 0) ? 0 : minColour + (blue - minColour) * modulation;
 
         return [red * modulation, green * modulation, blue * modulation];
     }, model);
