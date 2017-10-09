@@ -15,10 +15,11 @@ function CruiseControlParser () {
         });
     }
     
-    function convertState(projectStatus) {
+    function convertState(projectStatus, codeCovered = true) {
         switch(projectStatus) {
             case 'Success':
-                return states.passing;
+                if (codeCovered) return states.passing;
+                else return states.lowCoverage;
             case 'Failure':
                 return states.failing;
             default:
