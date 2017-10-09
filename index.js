@@ -36,21 +36,19 @@ function draw() {
     const millis = new Date().getTime();
 
     client.mapPixels(modelPoint => {
-        let orgState = getOrgState(modelPoint.orgIndex);
-
-        if (orgState === "gearsetLogo" || orgState === "passing") {
-            return stateToColourMapping.getOrgColour(orgState);
+        if (modelPoint.type === "logo") {
+            return logoOrange;
         }
 
+        let orgState = getOrgState(modelPoint.orgIndex)
+        if (orgState = "passing") {
+            return stateToColourMapping.getOrgColour(orgState);
+        }
+        
         let [red, green, blue] = stateToColourMapping.getOrgColour(orgState);
         const modulation = 0.5 * (Math.sin(millis * 0.00628 * 0.5) + 1);
 
         return [red * modulation, green * modulation, blue * modulation];
-        if (modelPoint.type === "logo") {
-            return logoOrange;
-        }
-        let orgState = getOrgState(modelPoint.orgIndex)
-        return stateToColourMapping.getOrgColour(orgState);
     }, model);
 }
 
