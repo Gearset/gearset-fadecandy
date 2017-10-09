@@ -8,6 +8,7 @@ const stateToColourMapping = require('./stateToColourMapping');
 const states = require('./states');
 
 const defaultPollingPeriod = 1000 * 60 * 2; // 2 minutes
+const logoOrange = [247, 147, 17];
 
 const client = new OPC(process.env.FADECANDY_SERVER || 'localhost', 7890);
 const model = OPC.loadModel(__dirname + '/model.json');
@@ -45,6 +46,11 @@ function draw() {
         const modulation = 0.5 * (Math.sin(millis * 0.00628 * 0.5) + 1);
 
         return [red * modulation, green * modulation, blue * modulation];
+        if (modelPoint.type === "logo") {
+            return logoOrange;
+        }
+        let orgState = getOrgState(modelPoint.orgIndex)
+        return stateToColourMapping.getOrgColour(orgState);
     }, model);
 }
 
@@ -68,8 +74,6 @@ function updateOrgStates() {
 
                 return projectStatus.status;
             });
-
-            orgStates.push('gearsetLogo');
 
             console.log("Set org states to", orgStates);
         }
