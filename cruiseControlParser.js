@@ -18,8 +18,7 @@ function CruiseControlParser () {
     function convertState(projectStatus, codeCovered = true) {
         switch(projectStatus) {
             case 'Success':
-                if (codeCovered) return states.passing;
-                else return states.lowCoverage;
+                return codeCovered ? states.passing : states.lowCoverage;
             case 'Failure':
                 return states.failing;
             default:
