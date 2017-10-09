@@ -14,6 +14,7 @@ stateColours[states.failing] = red;
 stateColours[states.unknown] = white;
 
 function getOrgColour(orgState){
+    if (orgState === "gearsetLogo") return orange;
     let orgColour = stateColours[orgState];
     return orgColour || stateColours[states.unknown];
 }

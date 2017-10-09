@@ -27,10 +27,6 @@ if(pollingPeriodMillis < 5000) {
 
 let orgStates = [];
 
-function setOrgState(orgIndex, state) {
-    orgStates[orgIndex] = state;
-}
-
 function getOrgState(orgIndex) {
     return orgStates[orgIndex];
 }
@@ -59,10 +55,12 @@ function updateOrgStates() {
                     console.log("No project status returned for project with URL", projectUrl);
                     return states.unknown;
                 }
-    
+
                 return projectStatus.status;
             });
-    
+
+            orgStates.push('gearsetLogo');
+
             console.log("Set org states to", orgStates);
         }
     );
