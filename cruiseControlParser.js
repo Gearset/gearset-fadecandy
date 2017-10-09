@@ -15,10 +15,11 @@ function CruiseControlParser () {
         });
     }
     
-    function convertState(projectStatus) {
+    function convertState(projectStatus, codeCovered = true) {
         switch(projectStatus) {
             case 'Success':
-                return states.passing;
+                if (codeCovered) return states.passing;
+                else return states.lowCoverage;
             case 'Failure':
                 return states.failing;
             default:
@@ -30,11 +31,18 @@ function CruiseControlParser () {
     self.parse = function (feedBody) {
         return parseXml(feedBody).then((parsed) => {
             var statuses = parsed.Projects.Project.map( (project) => {
-                return {
+                let projectStatus = {
                     name: project.$.name,
-                    status: convertState(project.$.lastBuildStatus),
                     webUrl: project.$.webUrl
                 }
+
+                if (project.$.lastRunCodeCoverage && project.$.lastRunCodecoverageThreshold) {
+                    projectStatus.codeCovered = project.$.lastRunCodeCoverage >= project.$.lastRunCodecoverageThreshold;
+                }
+
+                projectStatus.status = convertState(project.$.lastBuildStatus, projectStatus.codeCovered);
+
+                return projectStatus;
             } );
 
             return statuses;
