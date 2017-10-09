@@ -4,10 +4,10 @@ let numPixelsPerOrg = 45;
 
 let model = [];
 
-for(var orgIndex = 0; orgIndex < numOrgsAndLogo; orgIndex++){
+for(var orgIndex = 0; orgIndex < numOrgs; orgIndex++){
     for(var pixelIndex = 0; pixelIndex < numPixelsPerOrg; pixelIndex++){
         model.push({
-            type: org,
+            type: "org",
             orgIndex: orgIndex,
             pixelIndex: pixelIndex
         });
@@ -18,7 +18,7 @@ for(var orgIndex = 0; orgIndex < numOrgsAndLogo; orgIndex++){
 var numPixelsInLogo = 45;
 for(var pixelIndex = 0; pixelIndex < numPixelsInLogo; pixelIndex++){
     model.push({
-        type: logo,
+        type: "logo",
         pixelIndex: pixelIndex
     });
 }
