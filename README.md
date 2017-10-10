@@ -31,6 +31,8 @@ Configuration settings are pulled from a `config.json` file in the root director
 
 - `feedUrl`: the URL of the cc.xml file you would like to monitor
 - `projectUrls`: an array of the web URLs of the projects you want to display using the fadecandy board (since the feed may contain more projects than you have lights)
+- `projectNameForEasterEgg`: when the project name matches this, there are disco lights! (optional)
+- `easterEggFlashMilliSeconds`: the number of milliseconds, on average, until each pixel updates (optional)
 
 #### Example
 ```json
@@ -41,7 +43,9 @@ Configuration settings are pulled from a `config.json` file in the root director
         "https://app.gearset.com/test-monitoring-runs?monitorId=11111111-1111-1111-1111-111111111111",
         "https://app.gearset.com/test-monitoring-runs?monitorId=22222222-2222-2222-2222-222222222222",
         "https://app.gearset.com/test-monitoring-runs?monitorId=33333333-3333-3333-3333-333333333333"
-    ]
+    ],
+    "projectNameForEasterEgg": "Name of project",
+    "easterEggFlashMilliSeconds": 1000
 }
 ```
 

@@ -6,6 +6,7 @@ const parser = require("./cruiseControlParser");
 const stateGetter = require("./orgStateGetter");
 const stateToColourMapping = require('./stateToColourMapping');
 const states = require('./states');
+const gearsetParty = require('./gearsetParty');
 
 const defaultPollingPeriod = 1000 * 60 * 2; // 2 minutes
 const logoOrange = [247, 147, 17];
@@ -17,6 +18,7 @@ const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 const feedUrl = config.feedUrl;
 const projectUrls = config.projectUrls;
 let pollingPeriodMillis = config.pollingPeriodMillis || defaultPollingPeriod;
+const easterEggName = config.projectNameForEasterEgg || "Gearset is awesome";
 
 if(!projectUrls){
     console.error("No project URLS defined in config.json");
@@ -29,7 +31,11 @@ if(pollingPeriodMillis < 5000) {
 let orgStates = [];
 
 function getOrgState(orgIndex) {
-    return orgStates[orgIndex];
+    return orgStates[orgIndex] ? orgStates[orgIndex].status : states.unknown;
+}
+
+function getOrgName(orgIndex) {
+    return orgStates[orgIndex] ? orgStates[orgIndex].name : "unknown";
 }
 
 function draw() {
@@ -40,9 +46,14 @@ function draw() {
             return logoOrange;
         }
 
-        let orgState = getOrgState(modelPoint.orgIndex);
+        const orgState = getOrgState(modelPoint.orgIndex);
+        const orgName = getOrgName(modelPoint.orgIndex)
         if (orgState === "passing") {
             return stateToColourMapping.getOrgColour(orgState);
+        }
+
+        if (orgName === easterEggName) {
+            return gearsetParty(modelPoint.pixelIndex);
         }
 
         let [red, green, blue] = stateToColourMapping.getOrgColour(orgState);
@@ -68,16 +79,22 @@ function updateOrgStates() {
     
             orgStates = _.map(projectUrls, projectUrl => {
                 let projectStatus = _.find(projectsJson, x => x.webUrl === projectUrl);
-    
+
                 if(!projectStatus) {
                     console.log("No project status returned for project with URL", projectUrl);
-                    return states.unknown;
+                    return {
+                        name: "unknown",
+                        status: states.unknown
+                    };
                 }
 
-                return projectStatus.status;
+                return {
+                    name: projectStatus.name,
+                    status: projectStatus.status
+                };
             });
 
-            console.log("Set org states to", orgStates);
+            console.log("Set org states to", orgStates.map(state => state.status));
         }
     );
 }
