@@ -33,12 +33,26 @@ function getOrgState(orgIndex) {
 }
 
 function draw() {
+    const millis = new Date().getTime();
+
     client.mapPixels(modelPoint => {
         if (modelPoint.type === "logo") {
             return logoOrange;
         }
-        let orgState = getOrgState(modelPoint.orgIndex)
-        return stateToColourMapping.getOrgColour(orgState);
+
+        let orgState = getOrgState(modelPoint.orgIndex);
+        if (orgState === "passing") {
+            return stateToColourMapping.getOrgColour(orgState);
+        }
+
+        let [red, green, blue] = stateToColourMapping.getOrgColour(orgState);
+        const modulation = 0.5 * (Math.sin(millis * 0.00628 * 0.5) + 1);
+        const minColour = 25;
+        red = (red === 0) ? 0 : minColour + (red - minColour) * modulation;
+        green = (green === 0) ? 0 : minColour + (green - minColour) * modulation;
+        blue = (blue === 0) ? 0 : minColour + (blue - minColour) * modulation;
+
+        return [red, green, blue];
     }, model);
 }
 
