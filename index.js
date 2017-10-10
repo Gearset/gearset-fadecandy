@@ -52,7 +52,7 @@ function draw() {
             return stateToColourMapping.getOrgColour(orgState);
         }
 
-        if (orgName === "easterEggName") {
+        if (orgName === easterEggName) {
             return gearsetParty(modelPoint.pixelIndex);
         }
 
