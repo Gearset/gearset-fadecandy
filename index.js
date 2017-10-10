@@ -6,6 +6,7 @@ const parser = require("./cruiseControlParser");
 const stateGetter = require("./orgStateGetter");
 const stateToColourMapping = require('./stateToColourMapping');
 const states = require('./states');
+const gearsetParty = require('./gearsetParty');
 
 const defaultPollingPeriod = 1000 * 60 * 2; // 2 minutes
 const logoOrange = [247, 147, 17];
@@ -17,6 +18,7 @@ const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 const feedUrl = config.feedUrl;
 const projectUrls = config.projectUrls;
 let pollingPeriodMillis = config.pollingPeriodMillis || defaultPollingPeriod;
+const easterEggName = config.projectNameForEasterEgg || "Gearset is awesome";
 
 if(!projectUrls){
     console.error("No project URLS defined in config.json");
@@ -34,29 +36,6 @@ function getOrgState(orgIndex) {
 
 function getOrgName(orgIndex) {
     return orgStates[orgIndex] ? orgStates[orgIndex].name : "unknown";
-}
-
-const easterEggName = config.projectNameForEasterEgg || "Gearset is awesome";
-const easterEggMilliSeconds = config.easterEggFlashMilliSeconds || 1000;
-let startTime = new Date().getTime();
-let pixelStatus = Array(...Array(45)).map(() => {
-    return {
-        timeSet: startTime + Math.floor(Math.random() * 2000),
-        colour: [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)]
-    };
-});
-function gearsetParty(pixelIndex) {
-    const millis = new Date().getTime();;
-    const pixelLastSet = pixelStatus[pixelIndex].timeSet;
-    const randomDelay = Math.floor(Math.random() * (2*easterEggMilliSeconds + 1) - easterEggMilliSeconds);
-    if ((millis - pixelLastSet + randomDelay) >= easterEggMilliSeconds) {
-        const red = Math.floor(Math.random() * 256);
-        const green = Math.floor(Math.random() * 256);
-        const blue = Math.floor(Math.random() * 256);
-        pixelStatus[pixelIndex].timeSet = millis;
-        pixelStatus[pixelIndex].colour = [red, green, blue];
-    }
-    return pixelStatus[pixelIndex].colour;
 }
 
 function draw() {
