@@ -37,18 +37,26 @@ function getOrgName(orgIndex) {
 }
 
 let startTime = new Date().getTime();
-let pixelStatus = Array.apply(null, {length: 45}).fill({
-    timeSet: startTime,
-    colour: [0,0,0]
+let pixelStatus = Array(...Array(45)).map(() => {
+    return {
+        timeSet: startTime + Math.floor(Math.random() * 2000),
+        colour: [0,0,0]
+    };
 });
-function gearsetParty(pixelIndex, time) {
+console.log(pixelStatus)
+function gearsetParty(pixelIndex) {
+    const millis = new Date().getTime();;
     const pixelLastSet = pixelStatus[pixelIndex].timeSet;
-    if ((time - pixelLastSet) >= 4000) {
+    const randomDelay = Math.floor(Math.random() * 4001 - 2000);
+    if ((millis - pixelLastSet + randomDelay) >= 2000) {
+        console.log(pixelIndex)
         const red = Math.floor(Math.random() * 256);
         const green = Math.floor(Math.random() * 256);
         const blue = Math.floor(Math.random() * 256);
-        pixelStatus[pixelIndex].timeSet = time;
-        pixelStatus[pixelIndex].colour = [red, green, blue]
+        pixelStatus[pixelIndex].timeSet = millis;
+        pixelStatus[pixelIndex].colour = [red, green, blue];
+        console.log(pixelStatus[pixelIndex], pixelStatus[pixelIndex + 1]);
+        console.log(pixelStatus)
     }
     return pixelStatus[pixelIndex].colour;
 }
@@ -69,7 +77,7 @@ function draw() {
 
         //if (orgName === "Gearset is awesome") {
         if (modelPoint.orgIndex === 3){
-            return gearsetParty(modelPoint.pixelIndex, millis);
+            return gearsetParty(modelPoint.pixelIndex);
         }
         //}
 
