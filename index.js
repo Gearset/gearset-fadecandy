@@ -36,19 +36,20 @@ function getOrgName(orgIndex) {
     return orgStates[orgIndex] ? orgStates[orgIndex].name : "unknown";
 }
 
+const easterEggName = config.projectNameForEasterEgg || "Gearset is awesome";
+const easterEggMilliSeconds = config.easterEggFlashMilliSeconds || 1000;
 let startTime = new Date().getTime();
 let pixelStatus = Array(...Array(45)).map(() => {
     return {
         timeSet: startTime + Math.floor(Math.random() * 2000),
-        colour: [0,0,0]
+        colour: [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)]
     };
 });
 function gearsetParty(pixelIndex) {
     const millis = new Date().getTime();;
     const pixelLastSet = pixelStatus[pixelIndex].timeSet;
-    const randomDelay = Math.floor(Math.random() * 4001 - 2000);
-    if ((millis - pixelLastSet + randomDelay) >= 2000) {
-        console.log(pixelIndex)
+    const randomDelay = Math.floor(Math.random() * (2*easterEggMilliSeconds + 1) - easterEggMilliSeconds);
+    if ((millis - pixelLastSet + randomDelay) >= easterEggMilliSeconds) {
         const red = Math.floor(Math.random() * 256);
         const green = Math.floor(Math.random() * 256);
         const blue = Math.floor(Math.random() * 256);
@@ -72,7 +73,7 @@ function draw() {
             return stateToColourMapping.getOrgColour(orgState);
         }
 
-        //if (orgName === "Gearset is awesome") {
+        //if (orgName === "easterEggName") {
         if (modelPoint.orgIndex === 3){
             return gearsetParty(modelPoint.pixelIndex);
         }
