@@ -29,7 +29,15 @@ if(pollingPeriodMillis < 5000) {
 let orgStates = [];
 
 function getOrgState(orgIndex) {
-    return orgStates[orgIndex];
+    return orgStates[orgIndex] ? orgStates[orgIndex].status : states.unknown;
+}
+
+function getOrgName(orgIndex) {
+    return orgStates[orgIndex] ? orgStates[orgIndex].name : "unknown";
+}
+
+function gearsetParty(pixelIndex) {
+    return [128, 0, 0]
 }
 
 function draw() {
@@ -40,9 +48,14 @@ function draw() {
             return logoOrange;
         }
 
-        let orgState = getOrgState(modelPoint.orgIndex);
+        const orgState = getOrgState(modelPoint.orgIndex);
+        const orgName = getOrgName(modelPoint.orgIndex)
         if (orgState === "passing") {
             return stateToColourMapping.getOrgColour(orgState);
+        }
+
+        if (orgName === "Gearset is awesome") {
+            return gearsetParty(modelPoint.pixelIndex);
         }
 
         let [red, green, blue] = stateToColourMapping.getOrgColour(orgState);
@@ -68,16 +81,22 @@ function updateOrgStates() {
     
             orgStates = _.map(projectUrls, projectUrl => {
                 let projectStatus = _.find(projectsJson, x => x.webUrl === projectUrl);
-    
+
                 if(!projectStatus) {
                     console.log("No project status returned for project with URL", projectUrl);
-                    return states.unknown;
+                    return {
+                        name: "unknown",
+                        status: states.unknown
+                    };
                 }
 
-                return projectStatus.status;
+                return {
+                    name: projectStatus.name,
+                    status: projectStatus.status
+                };
             });
 
-            console.log("Set org states to", orgStates);
+            console.log("Set org states to", orgStates.map(state => state.status));
         }
     );
 }
