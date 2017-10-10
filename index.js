@@ -38,6 +38,8 @@ function getOrgName(orgIndex) {
     return orgStates[orgIndex] ? orgStates[orgIndex].name : "unknown";
 }
 
+var partyTime = new gearsetParty(config, new Date().getTime());
+
 function draw() {
     const millis = new Date().getTime();
 
@@ -48,12 +50,13 @@ function draw() {
 
         const orgState = getOrgState(modelPoint.orgIndex);
         const orgName = getOrgName(modelPoint.orgIndex)
-        if (orgState === "passing") {
-            return stateToColourMapping.getOrgColour(orgState);
-        }
 
         if (orgName === easterEggName) {
-            return gearsetParty(modelPoint.pixelIndex);
+            return partyTime.letsGetThisPartyStarted(modelPoint.pixelIndex, millis);
+        }
+
+        if (orgState === "passing") {
+            return stateToColourMapping.getOrgColour(orgState);
         }
 
         let [red, green, blue] = stateToColourMapping.getOrgColour(orgState);
