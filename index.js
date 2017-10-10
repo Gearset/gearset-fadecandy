@@ -43,7 +43,6 @@ let pixelStatus = Array(...Array(45)).map(() => {
         colour: [0,0,0]
     };
 });
-console.log(pixelStatus)
 function gearsetParty(pixelIndex) {
     const millis = new Date().getTime();;
     const pixelLastSet = pixelStatus[pixelIndex].timeSet;
@@ -55,8 +54,6 @@ function gearsetParty(pixelIndex) {
         const blue = Math.floor(Math.random() * 256);
         pixelStatus[pixelIndex].timeSet = millis;
         pixelStatus[pixelIndex].colour = [red, green, blue];
-        console.log(pixelStatus[pixelIndex], pixelStatus[pixelIndex + 1]);
-        console.log(pixelStatus)
     }
     return pixelStatus[pixelIndex].colour;
 }
