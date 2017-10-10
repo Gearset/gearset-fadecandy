@@ -36,8 +36,17 @@ function getOrgName(orgIndex) {
     return orgStates[orgIndex] ? orgStates[orgIndex].name : "unknown";
 }
 
-function gearsetParty(pixelIndex) {
-    return [128, 0, 0]
+let lastTime = new Date().getTime();
+let pixelStatus = Array.apply(null, {length: 45}).fill([0,0,0]);
+function gearsetParty(pixelIndex, time) {
+    if ((time - lastTime) >= 4000) {
+        const red = Math.floor(Math.random() * 256);
+        const green = Math.floor(Math.random() * 256);
+        const blue = Math.floor(Math.random() * 256);
+        if (pixelIndex === 45) lastTime = time;
+        pixelStatus[pixelIndex] = [red, green, blue]
+    }
+    return pixelStatus[pixelIndex];
 }
 
 function draw() {
@@ -54,9 +63,9 @@ function draw() {
             return stateToColourMapping.getOrgColour(orgState);
         }
 
-        if (orgName === "Gearset is awesome") {
-            return gearsetParty(modelPoint.pixelIndex);
-        }
+        //if (orgName === "Gearset is awesome") {
+            return gearsetParty(modelPoint.pixelIndex, millis);
+        //}
 
         let [red, green, blue] = stateToColourMapping.getOrgColour(orgState);
         const modulation = 0.5 * (Math.sin(millis * 0.00628 * 0.5) + 1);
