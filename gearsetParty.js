@@ -1,29 +1,33 @@
-const fs = require("fs");
+function gearsetParty(config, startTime) {
+    const self = this;
 
-const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
-const easterEggMilliSeconds = config.easterEggFlashMilliSeconds || 1000;
+    self.easterEggMilliSeconds = config.easterEggFlashMilliSeconds || 1000;
 
-let startTime = new Date().getTime();
+    self.pixelStatus = Array(...Array(45)).map(() => {
+        return {
+            timeSet: startTime + Math.floor(Math.random() * 2000),
+            colour: [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)]
+        };
+    });
 
-let pixelStatus = Array(...Array(45)).map(() => {
-    return {
-        timeSet: startTime + Math.floor(Math.random() * 2000),
-        colour: [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)]
-    };
-});
-
-function gearsetParty(pixelIndex) {
-    const millis = new Date().getTime();;
-    const pixelLastSet = pixelStatus[pixelIndex].timeSet;
-    const randomDelay = Math.floor(Math.random() * (2*easterEggMilliSeconds + 1) - easterEggMilliSeconds);
-    if ((millis - pixelLastSet + randomDelay) >= easterEggMilliSeconds) {
-        const red = Math.floor(Math.random() * 256);
-        const green = Math.floor(Math.random() * 256);
-        const blue = Math.floor(Math.random() * 256);
-        pixelStatus[pixelIndex].timeSet = millis;
-        pixelStatus[pixelIndex].colour = [red, green, blue];
+    self.Test = function() {
+        console.log('writing')
     }
-    return pixelStatus[pixelIndex].colour;
+
+    self.letsGetThisPartyStarted = function (pixelIndex, millis) {
+        const pixelLastSet = self.pixelStatus[pixelIndex].timeSet;
+        const randomDelay = Math.floor(Math.random() * (2*self.easterEggMilliSeconds + 1) - self.easterEggMilliSeconds);
+        if ((millis - pixelLastSet + randomDelay) >= self.easterEggMilliSeconds) {
+            const red = Math.floor(Math.random() * 256);
+            const green = Math.floor(Math.random() * 256);
+            const blue = Math.floor(Math.random() * 256);
+            self.pixelStatus[pixelIndex].timeSet = millis;
+            self.pixelStatus[pixelIndex].colour = [red, green, blue];
+        }
+        return self.pixelStatus[pixelIndex].colour;
+    }
+
+    return self;   
 }
 
 module.exports = gearsetParty;

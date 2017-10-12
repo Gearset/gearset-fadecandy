@@ -4,9 +4,9 @@ const _ = require('underscore');
 const fs = require("fs");
 const parser = require("./cruiseControlParser");
 const stateGetter = require("./orgStateGetter");
-const stateToColourMapping = require('./stateToColourMapping');
 const states = require('./states');
 const gearsetParty = require('./gearsetParty');
+const drawOrgs = require('./drawOrgs');
 
 const defaultPollingPeriod = 1000 * 60 * 2; // 2 minutes
 const logoOrange = [247, 147, 17];
@@ -38,6 +38,8 @@ function getOrgName(orgIndex) {
     return orgStates[orgIndex] ? orgStates[orgIndex].name : "unknown";
 }
 
+var partyTime = new gearsetParty(config, new Date().getTime());
+
 function draw() {
     const millis = new Date().getTime();
 
@@ -48,22 +50,12 @@ function draw() {
 
         const orgState = getOrgState(modelPoint.orgIndex);
         const orgName = getOrgName(modelPoint.orgIndex)
-        if (orgState === "passing") {
-            return stateToColourMapping.getOrgColour(orgState);
-        }
 
         if (orgName === easterEggName) {
-            return gearsetParty(modelPoint.pixelIndex);
+            return partyTime.letsGetThisPartyStarted(modelPoint.pixelIndex, millis);
         }
 
-        let [red, green, blue] = stateToColourMapping.getOrgColour(orgState);
-        const modulation = 0.5 * (Math.sin(millis * 0.00628 * 0.5) + 1);
-        const minColour = 25;
-        red = (red === 0) ? 0 : minColour + (red - minColour) * modulation;
-        green = (green === 0) ? 0 : minColour + (green - minColour) * modulation;
-        blue = (blue === 0) ? 0 : minColour + (blue - minColour) * modulation;
-
-        return [red, green, blue];
+        return drawOrgs(orgState, millis);
     }, model);
 }
 
