@@ -1,10 +1,10 @@
 const states = require('./states');
 
 const black = [0, 0, 0];
-const white = [128, 128, 128];
-const red = [128, 0, 0];
-const green = [0, 128, 0];
-const yellow = [128, 128, 0]; 
+const white = [255, 255, 255];
+const red = [255, 0, 0];
+const green = [0, 255, 0];
+const yellow = [255, 255, 0]; 
 
 const stateColours = {};
 stateColours[states.passing] = green;
