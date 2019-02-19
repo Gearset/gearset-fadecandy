@@ -1,6 +1,7 @@
 {
   "name": "gearset-fadecandy",
   "version": "1.0.0",
+  "repository": "https://github.com/Gearset/gearset-fadecandy",
   "description": "",
   "main": "index.js",
   "scripts": {
